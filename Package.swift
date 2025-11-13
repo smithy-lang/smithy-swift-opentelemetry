@@ -11,7 +11,7 @@ let package = Package(
         .watchOS(.v9),
     ],
     products: [
-        .library(name: "SmithySwiftOpenTelemetry", targets: ["SmithySwiftOpenTelemetry"]),
+        .library(name: "SmithyOpenTelemetry", targets: ["SmithyOpenTelemetry"]),
     ],
     dependencies: [
         .package(url: "https://github.com/smithy-lang/smithy-swift", from: "0.153.0"),
@@ -19,7 +19,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "SmithySwiftOpenTelemetry",
+            name: "SmithyOpenTelemetry",
             dependencies: [
                 .product(name: "Smithy", package: "smithy-swift"),
                 .product(name: "ClientRuntime", package: "smithy-swift"),
@@ -27,8 +27,8 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "SmithySwiftOpenTelemetryTests",
-            dependencies: ["SmithySwiftOpenTelemetry"]
+            name: "SmithyOpenTelemetryTests",
+            dependencies: ["SmithyOpenTelemetry"]
         ),
     ]
 )
