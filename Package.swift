@@ -22,7 +22,7 @@ let package = Package(
             name: "SmithyOpenTelemetry",
             dependencies: [
                 .product(name: "Smithy", package: "smithy-swift"),
-                .product(name: "ClientRuntime", package: "smithy-swift"),
+                .product(name: "SmithyTelemetryAPI", package: "smithy-swift"),
                 .product(name: "OpenTelemetrySdk", package: "opentelemetry-swift"),
             ]
         ),
