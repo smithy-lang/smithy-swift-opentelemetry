@@ -24,6 +24,15 @@
 import struct Smithy.AttributeKey
 import struct Smithy.Attributes
 
+// SmithyTelemetryAPI specific imports
+import protocol SmithyTelemetryAPI.Tracer
+import protocol SmithyTelemetryAPI.TracerProvider
+import protocol SmithyTelemetryAPI.TraceSpan
+import protocol SmithyTelemetryAPI.TelemetryContext
+import protocol SmithyTelemetryAPI.TelemetryScope
+import enum SmithyTelemetryAPI.SpanKind
+import enum SmithyTelemetryAPI.TraceSpanStatus
+
 public typealias OpenTelemetryTracer = OpenTelemetryApi.Tracer
 public typealias OpenTelemetrySpanKind = OpenTelemetryApi.SpanKind
 public typealias OpenTelemetrySpan = OpenTelemetryApi.Span
