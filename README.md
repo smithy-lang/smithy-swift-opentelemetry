@@ -16,6 +16,7 @@ Add this package as a dependency when you need OpenTelemetry support for your Sm
 ```swift
 dependencies: [
     .package(url: "https://github.com/smithy-lang/smithy-swift-opentelemetry", from: "1.0.0"),
+    .package(url: "https://github.com/open-telemetry/opentelemetry-swift", from: "1.13.0"),
 ]
 ```
 
