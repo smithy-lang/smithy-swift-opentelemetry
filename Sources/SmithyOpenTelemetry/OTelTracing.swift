@@ -6,32 +6,18 @@
 //
 
  #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
-@preconcurrency import enum OpenTelemetryApi.AttributeValue
-@preconcurrency import protocol OpenTelemetryApi.Span
-@preconcurrency import enum OpenTelemetryApi.SpanKind
-@preconcurrency import enum OpenTelemetryApi.Status
 // OpenTelemetryApi specific imports
-@preconcurrency import protocol OpenTelemetryApi.Tracer
+@preconcurrency import OpenTelemetryApi
 
-@preconcurrency import struct OpenTelemetrySdk.Resource
-@preconcurrency import struct OpenTelemetrySdk.SimpleSpanProcessor
-@preconcurrency import protocol OpenTelemetrySdk.SpanExporter
-@preconcurrency import class OpenTelemetrySdk.TracerProviderBuilder
 // OpenTelemetrySdk specific imports
-@preconcurrency import class OpenTelemetrySdk.TracerProviderSdk
+@preconcurrency import OpenTelemetrySdk
 
 // Smithy specific imports
 import struct Smithy.AttributeKey
 import struct Smithy.Attributes
 
 // SmithyTelemetryAPI specific imports
-import protocol SmithyTelemetryAPI.Tracer
-import protocol SmithyTelemetryAPI.TracerProvider
-import protocol SmithyTelemetryAPI.TraceSpan
-import protocol SmithyTelemetryAPI.TelemetryContext
-import protocol SmithyTelemetryAPI.TelemetryScope
-import enum SmithyTelemetryAPI.SpanKind
-import enum SmithyTelemetryAPI.TraceSpanStatus
+import SmithyTelemetryAPI
 
 public typealias OpenTelemetryTracer = OpenTelemetryApi.Tracer
 public typealias OpenTelemetrySpanKind = OpenTelemetryApi.SpanKind
@@ -39,7 +25,7 @@ public typealias OpenTelemetrySpan = OpenTelemetryApi.Span
 public typealias OpenTelemetryStatus = OpenTelemetryApi.Status
 
 // Trace
-public final class OTelTracerProvider: TracerProvider {
+public final class OTelTracerProvider: SmithyTelemetryAPI.TracerProvider {
     private let sdkTracerProvider: TracerProviderSdk
 
     public init(spanExporter: SpanExporter) {
@@ -49,13 +35,13 @@ public final class OTelTracerProvider: TracerProvider {
             .build()
     }
 
-    public func getTracer(scope: String) -> any Tracer {
+    public func getTracer(scope: String) -> any SmithyTelemetryAPI.Tracer {
         let tracer = self.sdkTracerProvider.get(instrumentationName: scope)
         return OTelTracerImpl(otelTracer: tracer)
     }
 }
 
-public final class OTelTracerImpl: Tracer {
+public final class OTelTracerImpl: SmithyTelemetryAPI.Tracer {
     private let otelTracer: OpenTelemetryTracer
 
     public init(otelTracer: OpenTelemetryTracer) {
@@ -64,8 +50,8 @@ public final class OTelTracerImpl: Tracer {
 
     public func createSpan(
         name: String,
-        initialAttributes: Attributes?, spanKind: SpanKind, parentContext: (any TelemetryContext)?
-    ) -> any TraceSpan {
+        initialAttributes: Attributes?, spanKind: SmithyTelemetryAPI.SpanKind, parentContext: (any SmithyTelemetryAPI.TelemetryContext)?
+    ) -> any SmithyTelemetryAPI.TraceSpan {
         let spanBuilder = self.otelTracer
             .spanBuilder(spanName: name)
             .setSpanKind(spanKind: spanKind.toOTelSpanKind())
@@ -81,7 +67,7 @@ public final class OTelTracerImpl: Tracer {
     }
 }
 
-private final class OTelTraceSpanImpl: TraceSpan {
+private final class OTelTraceSpanImpl: SmithyTelemetryAPI.TraceSpan {
     let name: String
     private let otelSpan: OpenTelemetrySpan
 
@@ -102,7 +88,7 @@ private final class OTelTraceSpanImpl: TraceSpan {
         self.otelSpan.setAttribute(key: key.getName(), value: AttributeValue.init(value))
     }
 
-    func setStatus(status: TraceSpanStatus) {
+    func setStatus(status: SmithyTelemetryAPI.TraceSpanStatus) {
         self.otelSpan.status = status.toOTelStatus()
     }
 
@@ -111,7 +97,7 @@ private final class OTelTraceSpanImpl: TraceSpan {
     }
 }
 
-extension SpanKind {
+extension SmithyTelemetryAPI.SpanKind {
     func toOTelSpanKind() -> OpenTelemetrySpanKind {
         switch self {
         case .client:
@@ -128,7 +114,7 @@ extension SpanKind {
     }
 }
 
-extension TraceSpanStatus {
+extension SmithyTelemetryAPI.TraceSpanStatus {
     func toOTelStatus() -> OpenTelemetryStatus {
         switch self {
         case .error:
