@@ -125,10 +125,26 @@ final class OTelUtilsTests: XCTestCase {
         let otelAttributes = attributes.toOtelAttributes()
         
         XCTAssertEqual(otelAttributes.count, 4)
-        XCTAssertNotNil(otelAttributes["string-key"])
-        XCTAssertNotNil(otelAttributes["int-key"])
-        XCTAssertNotNil(otelAttributes["bool-key"])
-        XCTAssertNotNil(otelAttributes["double-key"])
+
+        guard case .string(let stringValue) = otelAttributes["string-key"] else {
+            return XCTFail("Expected string attribute")
+        }
+        XCTAssertEqual(stringValue, "value")
+
+        guard case .int(let intValue) = otelAttributes["int-key"] else {
+            return XCTFail("Expected int attribute")
+        }
+        XCTAssertEqual(intValue, 100)
+
+        guard case .bool(let boolValue) = otelAttributes["bool-key"] else {
+            return XCTFail("Expected bool attribute")
+        }
+        XCTAssertFalse(boolValue)
+
+        guard case .double(let doubleValue) = otelAttributes["double-key"] else {
+            return XCTFail("Expected double attribute")
+        }
+        XCTAssertEqual(doubleValue, 2.71, accuracy: 0.001)
     }
 }
 #endif
