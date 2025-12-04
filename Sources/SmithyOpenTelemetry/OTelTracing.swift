@@ -39,6 +39,10 @@ public final class OTelTracerProvider: SmithyTelemetryAPI.TracerProvider {
         let tracer = self.sdkTracerProvider.get(instrumentationName: scope)
         return OTelTracerImpl(otelTracer: tracer)
     }
+
+    public func forceFlush() {
+        sdkTracerProvider.forceFlush()
+    }
 }
 
 public final class OTelTracerImpl: SmithyTelemetryAPI.Tracer {

@@ -10,6 +10,8 @@ import XCTest
 @testable import SmithyOpenTelemetry
 import OpenTelemetrySdk
 import Smithy
+import SmithyTelemetryAPI
+import InMemoryExporter
 
 final class OTelTracingTests: XCTestCase {
     
@@ -23,6 +25,7 @@ final class OTelTracingTests: XCTestCase {
     }
     
     override func tearDown() {
+        spanExporter.reset()
         spanExporter = nil
         tracerProvider = nil
         super.tearDown()
@@ -60,7 +63,10 @@ final class OTelTracingTests: XCTestCase {
         span.emitEvent(name: "test-event", attributes: nil)
         span.end()
         
-        XCTAssertEqual(spanExporter.finishedSpans.count, 1)
+        // Force flush to ensure spans are exported
+        tracerProvider.forceFlush()
+
+        XCTAssertEqual(spanExporter.getFinishedSpanItems().count, 1)
     }
     
     func testSpanEmitEventWithAttributes() {
@@ -72,7 +78,10 @@ final class OTelTracingTests: XCTestCase {
         span.emitEvent(name: "test-event", attributes: eventAttributes)
         span.end()
         
-        XCTAssertEqual(spanExporter.finishedSpans.count, 1)
+        // Force flush to ensure spans are exported
+        tracerProvider.forceFlush()
+
+        XCTAssertEqual(spanExporter.getFinishedSpanItems().count, 1)
     }
     
     func testSpanSetAttribute() {
@@ -82,7 +91,10 @@ final class OTelTracingTests: XCTestCase {
         span.setAttribute(key: AttributeKey<String>(name: "runtime-key"), value: "runtime-value")
         span.end()
         
-        XCTAssertEqual(spanExporter.finishedSpans.count, 1)
+        // Force flush to ensure spans are exported
+        tracerProvider.forceFlush()
+
+        XCTAssertEqual(spanExporter.getFinishedSpanItems().count, 1)
     }
     
     func testSpanSetStatus() {
@@ -92,7 +104,10 @@ final class OTelTracingTests: XCTestCase {
         span.setStatus(status: .ok)
         span.end()
         
-        XCTAssertEqual(spanExporter.finishedSpans.count, 1)
+        // Force flush to ensure spans are exported
+        tracerProvider.forceFlush()
+
+        XCTAssertEqual(spanExporter.getFinishedSpanItems().count, 1)
     }
     
     func testSpanKindConversion() {
