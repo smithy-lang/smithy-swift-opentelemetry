@@ -7,12 +7,7 @@
 
  #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 import Foundation
-import protocol SmithyTelemetryAPI.TelemetryProvider
-import protocol SmithyTelemetryAPI.TelemetryContextManager
-import protocol SmithyTelemetryAPI.LoggerProvider
-import protocol SmithyTelemetryAPI.MeterProvider
-import protocol SmithyTelemetryAPI.TracerProvider
-import enum SmithyTelemetryAPI.DefaultTelemetry
+import SmithyTelemetryAPI
 
 // OpenTelemetrySdk specific imports
 @preconcurrency import protocol OpenTelemetrySdk.SpanExporter

@@ -23,12 +23,20 @@ let package = Package(
             dependencies: [
                 .product(name: "Smithy", package: "smithy-swift"),
                 .product(name: "SmithyTelemetryAPI", package: "smithy-swift"),
+                .product(name: "OpenTelemetryApi", package: "opentelemetry-swift"),
                 .product(name: "OpenTelemetrySdk", package: "opentelemetry-swift"),
             ]
         ),
         .testTarget(
             name: "SmithyOpenTelemetryTests",
-            dependencies: ["SmithyOpenTelemetry"]
+            dependencies: [
+                "SmithyOpenTelemetry",
+                .product(name: "Smithy", package: "smithy-swift"),
+                .product(name: "SmithyTelemetryAPI", package: "smithy-swift"),
+                .product(name: "OpenTelemetryApi", package: "opentelemetry-swift"),
+                .product(name: "OpenTelemetrySdk", package: "opentelemetry-swift"),
+                .product(name: "InMemoryExporter", package: "opentelemetry-swift"),
+            ]
         ),
     ]
 )

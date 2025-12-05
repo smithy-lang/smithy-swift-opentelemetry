@@ -7,28 +7,17 @@
 
  #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 // OpenTelemetryApi specific imports
-@preconcurrency import protocol OpenTelemetryApi.Tracer
-@preconcurrency import protocol OpenTelemetryApi.Span
-@preconcurrency import enum OpenTelemetryApi.SpanKind
-@preconcurrency import enum OpenTelemetryApi.Status
-@preconcurrency import enum OpenTelemetryApi.AttributeValue
+@preconcurrency import OpenTelemetryApi
 
 // OpenTelemetrySdk specific imports
-@preconcurrency import class OpenTelemetrySdk.TracerProviderSdk
-@preconcurrency import class OpenTelemetrySdk.TracerProviderBuilder
-@preconcurrency import struct OpenTelemetrySdk.SimpleSpanProcessor
-@preconcurrency import protocol OpenTelemetrySdk.SpanExporter
-@preconcurrency import struct OpenTelemetrySdk.Resource
+@preconcurrency import OpenTelemetrySdk
 
 // Smithy specific imports
 import struct Smithy.AttributeKey
 import struct Smithy.Attributes
-import enum SmithyTelemetryAPI.SpanKind
-import protocol SmithyTelemetryAPI.TelemetryContext
-import protocol SmithyTelemetryAPI.TracerProvider
-import protocol SmithyTelemetryAPI.TraceSpan
-import protocol SmithyTelemetryAPI.Tracer
-import enum SmithyTelemetryAPI.TraceSpanStatus
+
+// SmithyTelemetryAPI specific imports
+import SmithyTelemetryAPI
 
 public typealias OpenTelemetryTracer = OpenTelemetryApi.Tracer
 public typealias OpenTelemetrySpanKind = OpenTelemetryApi.SpanKind
@@ -50,6 +39,10 @@ public final class OTelTracerProvider: SmithyTelemetryAPI.TracerProvider {
         let tracer = self.sdkTracerProvider.get(instrumentationName: scope)
         return OTelTracerImpl(otelTracer: tracer)
     }
+
+    public func forceFlush() {
+        sdkTracerProvider.forceFlush()
+    }
 }
 
 public final class OTelTracerImpl: SmithyTelemetryAPI.Tracer {
@@ -61,8 +54,8 @@ public final class OTelTracerImpl: SmithyTelemetryAPI.Tracer {
 
     public func createSpan(
         name: String,
-        initialAttributes: Attributes?, spanKind: SmithyTelemetryAPI.SpanKind, parentContext: (any TelemetryContext)?
-    ) -> any TraceSpan {
+        initialAttributes: Attributes?, spanKind: SmithyTelemetryAPI.SpanKind, parentContext: (any SmithyTelemetryAPI.TelemetryContext)?
+    ) -> any SmithyTelemetryAPI.TraceSpan {
         let spanBuilder = self.otelTracer
             .spanBuilder(spanName: name)
             .setSpanKind(spanKind: spanKind.toOTelSpanKind())
@@ -78,7 +71,7 @@ public final class OTelTracerImpl: SmithyTelemetryAPI.Tracer {
     }
 }
 
-private final class OTelTraceSpanImpl: TraceSpan {
+private final class OTelTraceSpanImpl: SmithyTelemetryAPI.TraceSpan {
     let name: String
     private let otelSpan: OpenTelemetrySpan
 
@@ -99,7 +92,7 @@ private final class OTelTraceSpanImpl: TraceSpan {
         self.otelSpan.setAttribute(key: key.getName(), value: AttributeValue.init(value))
     }
 
-    func setStatus(status: TraceSpanStatus) {
+    func setStatus(status: SmithyTelemetryAPI.TraceSpanStatus) {
         self.otelSpan.status = status.toOTelStatus()
     }
 
@@ -125,7 +118,7 @@ extension SmithyTelemetryAPI.SpanKind {
     }
 }
 
-extension TraceSpanStatus {
+extension SmithyTelemetryAPI.TraceSpanStatus {
     func toOTelStatus() -> OpenTelemetryStatus {
         switch self {
         case .error:
