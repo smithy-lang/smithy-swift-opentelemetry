@@ -6,8 +6,8 @@ let package = Package(
     name: "smithy-swift-opentelemetry",
     platforms: [
         .macOS(.v12),
-        .iOS(.v16),
-        .tvOS(.v16),
+        .iOS(.v13),
+        .tvOS(.v13),
         .watchOS(.v9),
     ],
     products: [
