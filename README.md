@@ -2,10 +2,6 @@
 
 This package provides OpenTelemetry integration for smithy-swift clients. It bridges the Smithy telemetry API with the OpenTelemetry Swift SDK, allowing you to export traces and metrics.
 
-## Usage Policy Disclaimer
-
-This project is currently in-development and not yet ready for use.
-
 ### Features
 
 - OpenTelemetry tracer provider implementation
