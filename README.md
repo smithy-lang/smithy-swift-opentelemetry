@@ -16,18 +16,19 @@ Add this package as a dependency when you need OpenTelemetry support for your Sm
 ```swift
 dependencies: [
     .package(url: "https://github.com/smithy-lang/smithy-swift-opentelemetry", from: "1.0.0"),
-    .package(url: "https://github.com/open-telemetry/opentelemetry-swift", from: "1.13.0"),
 ]
 ```
+
+This package depends on [opentelemetry-swift-core](https://github.com/open-telemetry/opentelemetry-swift-core) for the `OpenTelemetryApi` and `OpenTelemetrySdk` modules.
 
 ### Usage
 
 ```swift
 import SmithyOpenTelemetry
-import InMemoryExporter  // Add the exporter you need
+import OpenTelemetrySdk
 
-// Create a span exporter
-let spanExporter = InMemoryExporter()
+// Create a span exporter (use any SpanExporter implementation)
+let spanExporter = YourSpanExporter()
 
 // Create the OpenTelemetry telemetry provider
 let telemetryProvider = OpenTelemetrySwift.provider(spanExporter: spanExporter)
@@ -41,10 +42,7 @@ let config = try await YourClient.YourClientConfiguration(
 let client = YourClient(config: config)
 ```
 
-You'll need to add the exporter package to your dependencies:
-```swift
-.product(name: "InMemoryExporter", package: "opentelemetry-swift")
-```
+For span exporters, you can use any `SpanExporter` implementation from the OpenTelemetry ecosystem, such as the OTLP exporters from the [opentelemetry-swift](https://github.com/open-telemetry/opentelemetry-swift) package.
 
 ## Security
 

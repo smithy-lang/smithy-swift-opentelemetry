@@ -11,7 +11,6 @@ import XCTest
 import OpenTelemetrySdk
 import Smithy
 import SmithyTelemetryAPI
-import InMemoryExporter
 
 final class OTelTracingTests: XCTestCase {
     
