@@ -16,7 +16,7 @@ jobs:
           - macos-14
           - macos-26
         xcode:
-          - Xcode_15.2
+          - Xcode_15.4
           - Xcode_26.0
         destination:
           - 'platform=iOS Simulator,OS=17.2,name=iPhone 15'
@@ -30,7 +30,7 @@ jobs:
             xcode: Xcode_26.0
           # Don't run new macOS with old Xcode
           - runner: macos-26
-            xcode: Xcode_15.2
+            xcode: Xcode_15.4
           # Don't run old simulators with new Xcode
           - destination: 'platform=tvOS Simulator,OS=17.2,name=Apple TV 4K (3rd generation) (at 1080p)'
             xcode: Xcode_26.0
@@ -38,9 +38,9 @@ jobs:
             xcode: Xcode_26.0
           # Don't run new simulators with old Xcode
           - destination: 'platform=tvOS Simulator,OS=26.0,name=Apple TV 4K (3rd generation) (at 1080p)'
-            xcode: Xcode_15.2
+            xcode: Xcode_15.4
           - destination: 'platform=iOS Simulator,OS=26.0.1,name=iPhone 17'
-            xcode: Xcode_15.2
+            xcode: Xcode_15.4
     
     steps:
       - name: Configure Xcode
@@ -67,9 +67,11 @@ jobs:
       
       - name: Build and Run Tests
         run: |
+          set -o pipefail && \
           NSUnbufferedIO=YES xcodebuild \
             -scheme smithy-swift-opentelemetry \
             -destination '${{ matrix.destination }}' \
-            test 2>&1
+            test 2>&1 \
+            | xcbeautify
 
 
