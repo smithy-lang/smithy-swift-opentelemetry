@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 5.10
 
 import PackageDescription
 
@@ -14,8 +14,8 @@ let package = Package(
         .library(name: "SmithyOpenTelemetry", targets: ["SmithyOpenTelemetry"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/smithy-lang/smithy-swift", from: "0.153.0"),
-        .package(url: "https://github.com/open-telemetry/opentelemetry-swift", from: "1.13.0"),
+        .package(url: "https://github.com/smithy-lang/smithy-swift", from: "0.191.0"),
+        .package(url: "https://github.com/open-telemetry/opentelemetry-swift-core", from: "2.3.0"),
     ],
     targets: [
         .target(
@@ -23,8 +23,8 @@ let package = Package(
             dependencies: [
                 .product(name: "Smithy", package: "smithy-swift"),
                 .product(name: "SmithyTelemetryAPI", package: "smithy-swift"),
-                .product(name: "OpenTelemetryApi", package: "opentelemetry-swift"),
-                .product(name: "OpenTelemetrySdk", package: "opentelemetry-swift"),
+                .product(name: "OpenTelemetryApi", package: "opentelemetry-swift-core"),
+                .product(name: "OpenTelemetrySdk", package: "opentelemetry-swift-core"),
             ]
         ),
         .testTarget(
@@ -33,9 +33,8 @@ let package = Package(
                 "SmithyOpenTelemetry",
                 .product(name: "Smithy", package: "smithy-swift"),
                 .product(name: "SmithyTelemetryAPI", package: "smithy-swift"),
-                .product(name: "OpenTelemetryApi", package: "opentelemetry-swift"),
-                .product(name: "OpenTelemetrySdk", package: "opentelemetry-swift"),
-                .product(name: "InMemoryExporter", package: "opentelemetry-swift"),
+                .product(name: "OpenTelemetryApi", package: "opentelemetry-swift-core"),
+                .product(name: "OpenTelemetrySdk", package: "opentelemetry-swift-core"),
             ]
         ),
     ]
