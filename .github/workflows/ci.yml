@@ -67,11 +67,9 @@ jobs:
       
       - name: Build and Run Tests
         run: |
-          set -o pipefail && \
           NSUnbufferedIO=YES xcodebuild \
             -scheme smithy-swift-opentelemetry \
             -destination '${{ matrix.destination }}' \
-            test 2>&1 \
-            | xcbeautify
+            test 2>&1
 
 
