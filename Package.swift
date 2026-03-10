@@ -14,7 +14,7 @@ let package = Package(
         .library(name: "SmithyOpenTelemetry", targets: ["SmithyOpenTelemetry"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/smithy-lang/smithy-swift", from: "0.153.0"),
+        .package(url: "https://github.com/smithy-lang/smithy-swift", from: "0.191.0"),
         .package(url: "https://github.com/open-telemetry/opentelemetry-swift-core", from: "2.3.0"),
     ],
     targets: [
