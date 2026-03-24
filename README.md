@@ -7,7 +7,7 @@ This package provides OpenTelemetry integration for smithy-swift clients. It bri
 - OpenTelemetry tracer provider implementation
 - Span creation and management
 - Attribute conversion between Smithy and OpenTelemetry formats
-- Platform support for macOS, iOS, tvOS, and watchOS
+- Platform support for macOS, iOS, tvOS, watchOS, and Linux
 
 ### Installation
 

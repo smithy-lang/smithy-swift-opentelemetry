@@ -5,7 +5,6 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
-#if canImport(OpenTelemetrySdk)
 import XCTest
 @testable import SmithyOpenTelemetry
 import OpenTelemetrySdk
@@ -123,4 +122,3 @@ final class OTelTracingTests: XCTestCase {
         XCTAssertEqual(TraceSpanStatus.unset.toOTelStatus(), .unset)
     }
 }
-#endif

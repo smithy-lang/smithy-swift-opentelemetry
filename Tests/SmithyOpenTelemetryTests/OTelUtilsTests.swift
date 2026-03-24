@@ -5,7 +5,6 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
-#if canImport(OpenTelemetrySdk)
 import XCTest
 @testable import SmithyOpenTelemetry
 import OpenTelemetryApi
@@ -147,4 +146,3 @@ final class OTelUtilsTests: XCTestCase {
         XCTAssertEqual(doubleValue, 2.71, accuracy: 0.001)
     }
 }
-#endif

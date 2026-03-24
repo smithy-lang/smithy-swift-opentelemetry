@@ -5,7 +5,6 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
- #if canImport(OpenTelemetrySdk)
 @preconcurrency import class OpenTelemetryApi.AttributeArray
 // OpenTelemetryApi specific imports
 @preconcurrency import enum OpenTelemetryApi.AttributeValue
@@ -52,4 +51,3 @@ extension Attributes {
         return otelKeys
     }
 }
-#endif
