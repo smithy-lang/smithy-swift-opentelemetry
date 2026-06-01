@@ -30,7 +30,7 @@ jobs:
         exclude:
           # Don't run old macOS with new Xcode
           - runner: macos-14
-            xcode: Xcode_26.0
+            xcode: Xcode_26.4
           # Don't run new macOS with old Xcode
           - runner: macos-26
             xcode: Xcode_15.4
