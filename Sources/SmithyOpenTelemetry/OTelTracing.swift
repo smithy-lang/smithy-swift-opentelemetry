@@ -59,11 +59,8 @@ public final class OTelTracerImpl: SmithyTelemetryAPI.Tracer {
             .spanBuilder(spanName: name)
             .setSpanKind(spanKind: spanKind.toOTelSpanKind())
 
-        initialAttributes?.getKeys().forEach { key in
-            spanBuilder.setAttribute(
-                key: key,
-                value: (initialAttributes?.get(key: AttributeKey<String>(name: key)))!
-            )
+        initialAttributes?.toOtelAttributes().forEach { key, value in
+            spanBuilder.setAttribute(key: key, value: value)
         }
 
         return OTelTraceSpanImpl(name: name, otelSpan: spanBuilder.startSpan())
