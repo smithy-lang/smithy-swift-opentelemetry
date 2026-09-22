@@ -83,6 +83,13 @@ jobs:
             test 2>&1 \
             | xcbeautify
 
+  apple-complete:
+    needs: apple
+    runs-on: ubuntu-latest
+    steps:
+      - name: Success
+        run: echo "apple passed"
+
   linux:
     runs-on: ${{ matrix.runner }}
     strategy:
@@ -114,3 +121,10 @@ jobs:
 
       - name: Build and Run Tests
         run: swift test
+
+  linux-complete:
+    needs: linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Success
+        run: echo "linux passed"
